@@ -4,10 +4,8 @@ import kr.ac.kumoh.s20260000.spring09backend.model.Song
 import kr.ac.kumoh.s20260000.spring09backend.service.SongService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/v1/songs")
@@ -34,5 +32,18 @@ class SongController(
         log.info("노래 상세 조회 성공 - 제목: {}", song?.title)
 
         return ResponseEntity.ok(song)
+    }
+
+    @PostMapping
+    fun create(@RequestBody song: Song): ResponseEntity<Song> {
+        log.info("노래 등록 시작: $song")
+
+        val saved = service.registerSong(song)
+
+        log.info("노래 등록 성공: $saved")
+
+        return ResponseEntity
+            .created(URI("/api/v1/songs/${saved.id}"))
+            .body(saved)
     }
 }

@@ -13,4 +13,5 @@ class SongService(
             = repository.findById(id).orElseThrow {
         IllegalArgumentException("노래(${id})를 찾을 수 없습니다.")
     }
+    fun registerSong(song: Song): Song = repository.save(song)
 }
