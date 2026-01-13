@@ -20,6 +20,9 @@ repositories {
 }
 
 dependencies {
+    // Validation 사용하기 위해 추가
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     // NOTE: Swagger 사용하기 위해 추가 (테스트 마친 후 제거할 것)
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14")
 

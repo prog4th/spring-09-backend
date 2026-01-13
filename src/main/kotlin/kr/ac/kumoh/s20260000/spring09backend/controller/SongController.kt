@@ -1,5 +1,6 @@
 package kr.ac.kumoh.s20260000.spring09backend.controller
 
+import jakarta.validation.Valid
 import kr.ac.kumoh.s20260000.spring09backend.model.Song
 import kr.ac.kumoh.s20260000.spring09backend.service.SongService
 import org.slf4j.LoggerFactory
@@ -35,7 +36,7 @@ class SongController(
     }
 
     @PostMapping
-    fun create(@RequestBody song: Song): ResponseEntity<Song> {
+    fun create(@Valid @RequestBody song: Song): ResponseEntity<Song> {
         log.info("노래 등록 시작: $song")
 
         val saved = service.registerSong(song)

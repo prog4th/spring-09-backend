@@ -3,6 +3,7 @@ package kr.ac.kumoh.s20260000.spring09backend.exception
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.time.LocalDateTime
@@ -32,6 +33,28 @@ class GlobalExceptionHandler {
             code = "BAD_REQUEST_001",
             traceId = MDC.get("traceId")
         )
+        return ResponseEntity
+            .badRequest()
+            .body(errorBody)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleValidationException(
+        e: MethodArgumentNotValidException
+    ): ResponseEntity<ErrorResponse> {
+        val errorMessage = e.bindingResult.fieldErrors
+            .joinToString(" ") {
+                it.defaultMessage ?: "검증 오류"
+            }
+
+        log.warn("검증 오류 발생: {}", errorMessage)
+
+        val errorBody = ErrorResponse(
+            message = errorMessage,
+            code = "VALIDATION_ERROR",
+            traceId = MDC.get("traceId")
+        )
+
         return ResponseEntity
             .badRequest()
             .body(errorBody)
